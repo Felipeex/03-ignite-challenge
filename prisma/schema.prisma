@@ -64,7 +64,7 @@ model Organization {
 
   phone String
 
-  adress  String
+  address String
   city    String
   zipcode String
 
