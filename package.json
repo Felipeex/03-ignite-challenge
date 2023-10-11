@@ -3,8 +3,10 @@
   "name": "03-ignite-challenge",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
-  "scripts": {},
+  "main": "./app/server.ts",
+  "scripts": {
+    "start:dev": "tsx ."
+  },
   "keywords": [],
   "author": "felipeex",
   "license": "MIT",
