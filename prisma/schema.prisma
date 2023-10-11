@@ -52,7 +52,7 @@ model Pet {
 
   photos String[]
 
-  @@map("pet")
+  @@map("pets")
 }
 
 model Organization {
@@ -70,5 +70,5 @@ model Organization {
 
   Pets Pet[]
 
-  @@map("organization")
+  @@map("organizations")
 }
