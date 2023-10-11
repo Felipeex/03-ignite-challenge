@@ -5,7 +5,9 @@
   "description": "",
   "main": "./app/server.ts",
   "scripts": {
-    "start:dev": "tsx watch ."
+    "start:dev": "tsx watch .",
+    "test": "vitest run --dir ./app/use-case",
+    "test:watch": "vitest --dir ./app/use-case"
   },
   "keywords": [],
   "author": "felipeex",
@@ -16,11 +18,15 @@
     "fastify": "^4.23.2"
   },
   "devDependencies": {
+    "@rocketseat/eslint-config": "^2.1.0",
     "@types/node": "^20.8.4",
+    "eslint": "^8.51.0",
     "prisma": "^5.4.2",
     "tsup": "^7.2.0",
     "tsx": "^3.13.0",
     "typescript": "^5.2.2",
+    "vite-tsconfig-paths": "^4.2.1",
+    "vitest": "^0.34.6",
     "zod": "^3.22.4"
   }
 }
