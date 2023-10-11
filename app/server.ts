@@ -1,5 +1,6 @@
 import { app } from "./app";
+import { env } from "./environment";
 
-app.listen({ port: 5000 }).then(() => {
-  console.log("HTTP Server started 🚀");
-});
+app
+  .listen({ port: env.PORT })
+  .then(() => console.log("HTTP Server started 🚀"));
