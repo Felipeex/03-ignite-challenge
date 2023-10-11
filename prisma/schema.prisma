@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -8,4 +5,70 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+}
+
+enum Size {
+  LITTLE
+  SMALL
+  MEDIUM
+  BIG
+}
+
+enum EnergyLevel {
+  LOW
+  AVERAGE
+  HIGH
+}
+
+enum IndependenceLevel {
+  LOW
+  AVERAGE
+  HIGH
+}
+
+enum Environment {
+  WIDE
+  COZY
+  SAFE
+}
+
+model Pet {
+  id          String @id @default(cuid())
+  name        String
+  age         Int
+  description String @db.VarChar(300)
+
+  size Size @default(LITTLE)
+
+  energy_level       EnergyLevel       @default(LOW)
+  independence_level IndependenceLevel @default(LOW)
+
+  environment Environment @default(WIDE)
+
+  organization_id String
+  Organization    Organization @relation(fields: [organization_id], references: [id])
+
+  requirements String[]
+
+  photos String[]
+
+  @@map("pet")
+}
+
+model Organization {
+  id String @id @default(uuid())
+
+  responsibleName  String
+  responsibleEmail String
+  password_hash    String
+
+  phone String
+
+  adress  String
+  city    String
+  zipcode String
+
+  Pets Pet[]
+
+  @@map("organization")
 }
