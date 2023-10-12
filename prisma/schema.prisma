@@ -59,7 +59,7 @@ model Organization {
   id String @id @default(uuid())
 
   responsibleName  String
-  responsibleEmail String
+  responsibleEmail String @unique
   password_hash    String
 
   phone String
