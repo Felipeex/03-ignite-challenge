@@ -18,7 +18,7 @@ interface CreateOrganizationResponse {
 }
 
 export class CreateOrganizationUseCase {
-  constructor(private OrganizationRepository: OrganizationRepository) {}
+  constructor(private organizationRepository: OrganizationRepository) {}
 
   async execute({
     responsibleName,
@@ -31,13 +31,13 @@ export class CreateOrganizationUseCase {
   }: CreateOrganizationRequest): Promise<CreateOrganizationResponse> {
     const password_hash = await hash(password, 6);
     const organizationWithSameEmail =
-      await this.OrganizationRepository.findByEmail(responsibleEmail);
+      await this.organizationRepository.findByEmail(responsibleEmail);
 
     if (organizationWithSameEmail) {
       throw new OrganizationWithSameEmailError();
     }
 
-    const organization = await this.OrganizationRepository.create({
+    const organization = await this.organizationRepository.create({
       responsibleName,
       responsibleEmail,
       password_hash,
