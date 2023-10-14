@@ -3,6 +3,7 @@ import { PetRepository } from "@/repositories/pets-repository";
 import { GetPetUseCase } from "./get-pet";
 import { InMemoryPetsRepository } from "@/repositories/in-memory/in-memory-pets-repository";
 import { Pet } from "@prisma/client";
+import { ResourceNotFoundError } from "./erros/resource-not-found-error";
 
 interface GetPetContext extends TestContext {
   PetRepository: PetRepository & { InMemoryPets: Pet[] };
@@ -42,5 +43,15 @@ describe("Get Pet (use-case)", () => {
         id: "pet-01",
       })
     );
+  });
+
+  it("should not be able to get inexistent pet", async ({
+    sut,
+  }: GetPetContext) => {
+    await expect(() =>
+      sut.execute({
+        id: "pet-01",
+      })
+    ).rejects.toBeInstanceOf(ResourceNotFoundError);
   });
 });
