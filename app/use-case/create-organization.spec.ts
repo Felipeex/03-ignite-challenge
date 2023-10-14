@@ -63,7 +63,7 @@ describe("Create organization (use-case)", () => {
     ).rejects.toBeInstanceOf(OrganizationWithSameEmailError);
   });
 
-  it("should compare password hashed", async ({
+  it("should hashed password correctly compared", async ({
     sut,
   }: CreateOrganizationContext) => {
     const { organization } = await sut.execute({
