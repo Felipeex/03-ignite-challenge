@@ -1,20 +1,20 @@
-import { Prisma, Organization } from "@prisma/client";
-import { OrganizationRepository } from "../organizations-repository";
-import { randomUUID } from "node:crypto";
+import { Organization, Prisma } from '@prisma/client'
+import { randomUUID } from 'node:crypto'
+import { OrganizationRepository } from '../organizations-repository'
 
 export class InMemoryOrganizationsRepository implements OrganizationRepository {
-  public InMemoryOrganizations: Organization[] = [];
+  public InMemoryOrganizations: Organization[] = []
 
   async findByEmail(email: string) {
     const findSameEmail = this.InMemoryOrganizations.find(
-      (organization) => organization.responsibleEmail === email
-    );
+      (organization) => organization.responsibleEmail === email,
+    )
 
     if (!findSameEmail) {
-      return null;
+      return null
     }
 
-    return findSameEmail;
+    return findSameEmail
   }
 
   async create(data: Prisma.OrganizationCreateInput) {
@@ -27,9 +27,9 @@ export class InMemoryOrganizationsRepository implements OrganizationRepository {
       address: data.address,
       city: data.city,
       zipcode: data.zipcode,
-    };
+    }
 
-    this.InMemoryOrganizations.push(organization);
-    return organization;
+    this.InMemoryOrganizations.push(organization)
+    return organization
   }
 }

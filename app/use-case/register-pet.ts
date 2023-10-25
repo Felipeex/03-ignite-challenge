@@ -1,35 +1,35 @@
-import { PetRepository } from "@/repositories/pets-repository";
-import { $Enums, Pet } from "@prisma/client";
+import { PetRepository } from '@/repositories/pets-repository'
+import { $Enums, Pet } from '@prisma/client'
 
 interface RegisterPetRequest {
-  organization_id: string;
-  name: string;
-  age: number;
-  description: string;
-  size?: $Enums.Size;
-  energy_level?: $Enums.EnergyLevel;
-  independence_level?: $Enums.IndependenceLevel;
-  environment?: $Enums.Environment;
-  requirements?: string[];
-  photos?: string[];
+  organizationId: string
+  name: string
+  age: number
+  description: string
+  size?: $Enums.Size
+  energyLevel?: $Enums.EnergyLevel
+  independenceLevel?: $Enums.IndependenceLevel
+  environment?: $Enums.Environment
+  requirements?: string[]
+  photos?: string[]
 }
 
 interface RegisterPetResponse {
-  pet: Pet;
+  pet: Pet
 }
 
 export class RegisterPetUseCase {
   constructor(private petRepository: PetRepository) {}
 
   async execute({
+    organizationId,
     name,
     age,
     description,
     size,
-    energy_level,
-    independence_level,
+    energyLevel,
+    independenceLevel,
     environment,
-    organization_id,
     requirements,
     photos,
   }: RegisterPetRequest): Promise<RegisterPetResponse> {
@@ -38,16 +38,16 @@ export class RegisterPetUseCase {
       age,
       description,
       size,
-      energy_level,
-      independence_level,
+      energy_level: energyLevel,
+      independence_level: independenceLevel,
       environment,
       requirements,
       photos,
-      organization_id,
-    });
+      organization_id: organizationId,
+    })
 
     return {
       pet,
-    };
+    }
   }
 }

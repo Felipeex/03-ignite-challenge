@@ -1,20 +1,20 @@
-import { Organization } from "@prisma/client";
-import { OrganizationRepository } from "@/repositories/organizations-repository";
-import { OrganizationWithSameEmailError } from "./erros/organization-with-same-email-error";
-import { hash } from "bcrypt";
+import { OrganizationRepository } from '@/repositories/organizations-repository'
+import { Organization } from '@prisma/client'
+import { hash } from 'bcrypt'
+import { OrganizationWithSameEmailError } from './erros/organization-with-same-email-error'
 
 interface CreateOrganizationRequest {
-  responsibleName: string;
-  responsibleEmail: string;
-  password: string;
-  phone: string;
-  address: string;
-  city: string;
-  zipcode: string;
+  responsibleName: string
+  responsibleEmail: string
+  password: string
+  phone: string
+  address: string
+  city: string
+  zipcode: string
 }
 
 interface CreateOrganizationResponse {
-  organization: Organization;
+  organization: Organization
 }
 
 export class CreateOrganizationUseCase {
@@ -29,26 +29,26 @@ export class CreateOrganizationUseCase {
     city,
     zipcode,
   }: CreateOrganizationRequest): Promise<CreateOrganizationResponse> {
-    const password_hash = await hash(password, 6);
+    const passwordHash = await hash(password, 6)
     const organizationWithSameEmail =
-      await this.organizationRepository.findByEmail(responsibleEmail);
+      await this.organizationRepository.findByEmail(responsibleEmail)
 
     if (organizationWithSameEmail) {
-      throw new OrganizationWithSameEmailError();
+      throw new OrganizationWithSameEmailError()
     }
 
     const organization = await this.organizationRepository.create({
       responsibleName,
       responsibleEmail,
-      password_hash,
+      password_hash: passwordHash,
       phone,
       address,
       city,
       zipcode,
-    });
+    })
 
     return {
       organization,
-    };
+    }
   }
 }
