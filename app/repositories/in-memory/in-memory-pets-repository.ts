@@ -1,19 +1,43 @@
 import { Pet, Prisma } from '@prisma/client'
 import { randomUUID } from 'node:crypto'
-import { PetRepository } from '../pets-repository'
+import { PetFilters, PetRepository } from '../pets-repository'
 
 export class InMemoryPetsRepository implements PetRepository {
   public InMemoryPets: Pet[] = []
 
-  async getManyByCharacteristics(characteristics: string, page: number) {
-    const findByCharacteristics = this.InMemoryPets.filter(
-      ({ name, description, age }) => {
+  async getManyByFilters(
+    query: string,
+    page: number,
+    {
+      energyLevel,
+      environment: filterEnvironment,
+      independenceLevel,
+      size: filterSize,
+    }: PetFilters,
+  ) {
+    const findByQueryAndFilters = this.InMemoryPets.filter(
+      ({
+        name,
+        description,
+        age,
+        energy_level,
+        environment,
+        independence_level,
+        size,
+      }) => {
         const petInformations = `${name} ${age} ${description}`
-        return petInformations.includes(characteristics)
+
+        if (energyLevel && energy_level !== energyLevel) return null
+        if (filterEnvironment && environment !== filterEnvironment) return null
+        if (independenceLevel && independence_level !== independenceLevel)
+          return null
+        if (filterSize && size !== filterSize) return null
+
+        return petInformations.includes(query)
       },
     ).slice((page - 1) * 20, page * 20)
 
-    return findByCharacteristics
+    return findByQueryAndFilters
   }
 
   async getById(id: string) {
