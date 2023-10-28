@@ -42,4 +42,6 @@ export async function Create(request: FastifyRequest, response: FastifyReply) {
 
     throw err
   }
+
+  response.status(201)
 }
