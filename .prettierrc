@@ -1,4 +1,5 @@
 {
+  "semi": false,
   "prettier/prettier": [
     "error",
     {

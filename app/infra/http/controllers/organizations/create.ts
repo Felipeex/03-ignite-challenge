@@ -2,6 +2,7 @@ import { OrganizationWithSameEmailError } from '@/use-case/erros/organization-wi
 import { makeCreateOrganizations } from '@/use-case/factories/make-create-organizations-use-case'
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
+import { createOrganizationViewModel } from '../../view-models/create-organization-view-model'
 
 export async function Create(request: FastifyRequest, response: FastifyReply) {
   const createBodySchema = z.object({
@@ -26,7 +27,7 @@ export async function Create(request: FastifyRequest, response: FastifyReply) {
 
   try {
     const usersRepository = makeCreateOrganizations()
-    await usersRepository.execute({
+    const { organization } = await usersRepository.execute({
       responsibleName,
       responsibleEmail,
       password,
@@ -35,6 +36,8 @@ export async function Create(request: FastifyRequest, response: FastifyReply) {
       city,
       zipcode,
     })
+
+    response.status(201).send(createOrganizationViewModel.toHTTP(organization))
   } catch (err) {
     if (err instanceof OrganizationWithSameEmailError) {
       return response.status(409).send({ message: err.message })
@@ -42,6 +45,4 @@ export async function Create(request: FastifyRequest, response: FastifyReply) {
 
     throw err
   }
-
-  response.status(201)
 }
