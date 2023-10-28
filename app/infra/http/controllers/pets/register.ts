@@ -30,6 +30,4 @@ export async function Register(
     requirements,
     photos,
   } = registerBodySchema.parse(request.body)
-
-  return response.status(401)
 }
