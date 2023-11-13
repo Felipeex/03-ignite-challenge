@@ -1,5 +1,7 @@
+import { OrganizationRepository } from '@/repositories/organizations-repository'
 import { PetRepository } from '@/repositories/pets-repository'
 import { $Enums, Pet } from '@prisma/client'
+import { OrganizationNotExistError } from './erros/organization-not-exist-error'
 
 interface RegisterPetRequest {
   organizationId: string
@@ -19,7 +21,10 @@ interface RegisterPetResponse {
 }
 
 export class RegisterPetUseCase {
-  constructor(private petRepository: PetRepository) {}
+  constructor(
+    private petRepository: PetRepository,
+    private organizationRepository: OrganizationRepository,
+  ) {}
 
   async execute({
     organizationId,
@@ -33,6 +38,13 @@ export class RegisterPetUseCase {
     requirements,
     photos,
   }: RegisterPetRequest): Promise<RegisterPetResponse> {
+    const findOrganizationById =
+      await this.organizationRepository.findById(organizationId)
+
+    if (!findOrganizationById) {
+      throw new OrganizationNotExistError()
+    }
+
     const pet = await this.petRepository.register({
       name,
       age,

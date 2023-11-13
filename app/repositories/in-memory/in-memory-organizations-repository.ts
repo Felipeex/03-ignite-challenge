@@ -5,6 +5,18 @@ import { OrganizationRepository } from '../organizations-repository'
 export class InMemoryOrganizationsRepository implements OrganizationRepository {
   public InMemoryOrganizations: Organization[] = []
 
+  async findById(id: string) {
+    const findedById = this.InMemoryOrganizations.find(
+      (organization) => organization.id === id,
+    )
+
+    if (!findedById) {
+      return null
+    }
+
+    return findedById
+  }
+
   async findByEmail(email: string) {
     const findSameEmail = this.InMemoryOrganizations.find(
       (organization) => organization.responsibleEmail === email,
